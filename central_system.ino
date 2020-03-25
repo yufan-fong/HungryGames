@@ -26,8 +26,7 @@ const int MAX_ADC_VALUE = 1023;
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-
- static bool state = 0;
+static bool state = 0;
 
 void setup() {
 
@@ -51,7 +50,8 @@ void loop() {
 
   if (state == 0){
       checkphone();
-  } else if(state == 1){
+  } 
+  else if(state == 1){
     checkdish();
   }
 }  
@@ -93,103 +93,104 @@ void checkphone(){
       delay(1000);
       state = 1;
     }
-}}
+  }
+}
 
 void checkdish(){
-      
-      push_value = digitalRead(pushbutton);
-      if (push_value == LOW){
-        digitalWrite(digitalPin1, HIGH);                   //turn on D10
-        delay(digital_delay);                          //wait before storing LDR reading
-        reading_array[0] = analogRead(sensorPin1); 
-        reading_array[1] = analogRead(sensorPin2);
-        reading_array[2] = analogRead(sensorPin3);
-        digitalWrite(digitalPin1, LOW);
-      
-        digitalWrite(digitalPin2, HIGH);                   //repeat for D11
-        delay(digital_delay);
-        reading_array[3] = analogRead(sensorPin1);
-        reading_array[4] = analogRead(sensorPin2);
-        reading_array[5] = analogRead(sensorPin3);
-        digitalWrite(digitalPin2, LOW);
-       
-        digitalWrite(digitalPin3, HIGH);                   //repeat for D12
-        delay(digital_delay);
-        reading_array[6] = analogRead(sensorPin1);
-        reading_array[7] = analogRead(sensorPin2);
-        reading_array[8] = analogRead(sensorPin3);
-        digitalWrite(digitalPin3, LOW);
-      
-        Serial.println("--------");                 //print out LDR values on serial monitor to check whether LDR working
-        Serial.print("G1 = ");
-        Serial.print(reading_array[0]);
-        Serial.print(" G2 = ");
-        Serial.print(reading_array[1]);
-        Serial.print(" G3 = ");
-        Serial.println(reading_array[2]);
-        Serial.print("G4 = ");
-        Serial.print(reading_array[3]);
-        Serial.print(" G5 = ");
-        Serial.print(reading_array[4]);
-        Serial.print(" G6 = ");
-        Serial.println(reading_array[5]);
-        Serial.print("G7 = ");
-        Serial.print(reading_array[6]);
-        Serial.print(" G8 = ");
-        Serial.print(reading_array[7]);
-        Serial.print(" G9 = ");
-        Serial.println(reading_array[8]);
-      
-        for(int i = 0; i<9; i++){                     //group reading values into 2,1,0
-          if (reading_array[i] >= 200) {              //high light reading, no playing chip
-            state_array[i][0] = '0';                  
-            } 
-            else if (reading_array[i] >= 80) {       //medium light reading, translucent chip, i.e. "O"
-            state_array[i][0] = '1';
-            } 
-            else {
-            state_array[i][0] = '2';                  //low light reading, opaque chip, i.e. "X"
-            }
-            order_no[i] = state_array[i][0];          //combine elements in state_array to form order_no (1 string with 9 char)
-            }
-      
-      order_string = String(order_no);
-      
-      Serial.println(order_string);                 //check order_string
-    
-      boolean check = false;
-      
-      for (int i = 0; i < 5; i++) {
-        if (order_array[i] == order_string){
-          check = true;
-          Serial.println(dish_array[i]);
-          lcd.clear();
-          lcd.setCursor(0,0);
-          lcd.print("You Have Ordered");
-          lcd.setCursor(0,1);
-          lcd.print(dish_array[i]);
-          break;
-        }
-      } 
-      
-      if(check == false){
-        Serial.println("Please Scan Your Order");
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("Please Scan");
-        lcd.setCursor(0,1);
-        lcd.print("Your Order");
-        }
-      delay(1000);
 
-     }
-      else{
-        Serial.println("Press Button to Scan");
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("Press Button to");
-        lcd.setCursor(0,1);
-        lcd.print("Scan");
-        delay(1000);
-      }
+  push_value = digitalRead(pushbutton);
+  if (push_value == LOW){
+    digitalWrite(digitalPin1, HIGH);                 //turn on D10
+    delay(digital_delay);                            //wait before storing LDR reading
+    reading_array[0] = analogRead(sensorPin1); 
+    reading_array[1] = analogRead(sensorPin2);
+    reading_array[2] = analogRead(sensorPin3);
+    digitalWrite(digitalPin1, LOW);
+
+    digitalWrite(digitalPin2, HIGH);                  //repeat for D11
+    delay(digital_delay);
+    reading_array[3] = analogRead(sensorPin1);
+    reading_array[4] = analogRead(sensorPin2);
+    reading_array[5] = analogRead(sensorPin3);
+    digitalWrite(digitalPin2, LOW);
+
+    digitalWrite(digitalPin3, HIGH);                  //repeat for D12
+    delay(digital_delay);
+    reading_array[6] = analogRead(sensorPin1);
+    reading_array[7] = analogRead(sensorPin2);
+    reading_array[8] = analogRead(sensorPin3);
+    digitalWrite(digitalPin3, LOW);
+
+    Serial.println("--------");                 //print out LDR values on serial monitor to check whether LDR working
+    Serial.print("G1 = ");
+    Serial.print(reading_array[0]);
+    Serial.print(" G2 = ");
+    Serial.print(reading_array[1]);
+    Serial.print(" G3 = ");
+    Serial.println(reading_array[2]);
+    Serial.print("G4 = ");
+    Serial.print(reading_array[3]);
+    Serial.print(" G5 = ");
+    Serial.print(reading_array[4]);
+    Serial.print(" G6 = ");
+    Serial.println(reading_array[5]);
+    Serial.print("G7 = ");
+    Serial.print(reading_array[6]);
+    Serial.print(" G8 = ");
+    Serial.print(reading_array[7]);
+    Serial.print(" G9 = ");
+    Serial.println(reading_array[8]);
+
+    for(int i = 0; i<9; i++){                     //group reading values into 2,1,0
+      if (reading_array[i] >= 200) {              //high light reading, no playing chip
+        state_array[i][0] = '0';                  
+        } 
+        else if (reading_array[i] >= 80) {        //medium light reading, translucent chip, i.e. "O"
+        state_array[i][0] = '1';
+        } 
+        else {
+        state_array[i][0] = '2';                  //low light reading, opaque chip, i.e. "X"
+        }
+      order_no[i] = state_array[i][0];            //combine elements in state_array to form order_no (1 string with 9 char)
+    }
+
+  order_string = String(order_no);
+
+  Serial.println(order_string);                   //check order_string
+
+  boolean check = false;
+
+  for (int i = 0; i < 5; i++) {
+    if (order_array[i] == order_string){
+      check = true;
+      Serial.println(dish_array[i]);
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("You Have Ordered");
+      lcd.setCursor(0,1);
+      lcd.print(dish_array[i]);
+      break;
+    }
+  } 
+
+  if(check == false){
+    Serial.println("Please Scan Your Order");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Please Scan");
+    lcd.setCursor(0,1);
+    lcd.print("Your Order");
+    }
+  delay(1000);
+  }
+
+  else{
+    Serial.println("Press Button to Scan");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Press Button to");
+    lcd.setCursor(0,1);
+    lcd.print("Scan");
+    delay(1000);
+  }
 }
